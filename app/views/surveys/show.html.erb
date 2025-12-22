@@ -1,0 +1,132 @@
+<div class="flex w-full min-h-screen">
+  <%= render "shared/sidebar" %>
+
+  <div class="flex-1 p-8">
+    <div class="mb-6">
+      <%= link_to surveys_path, 
+          class: "inline-flex items-center text-gray-600 hover:text-gray-900 mb-4" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to Surveys
+      <% end %>
+
+      <div class="flex items-start justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Survey Details</h1>
+          <p class="text-gray-600 mt-1">View and manage your survey form</p>
+        </div>
+        <div class="flex gap-2">
+          <%= link_to "#", 
+              class: "px-4 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" do %>
+            Edit
+          <% end %>
+          <%= link_to "#", 
+              class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors" do %>
+            Share
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <% if flash[:notice] %>
+      <div class="mb-4 p-4 bg-green-50 text-green-700 rounded-lg">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <div class="mb-4 p-4 bg-red-50 text-red-700 rounded-lg">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
+    <!-- Survey Information Card -->
+    <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex-1">
+          <div class="flex items-center gap-3 mb-2">
+            <h2 class="text-2xl font-bold text-gray-900">Survey Title</h2>
+            <span class="px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-700">
+              Draft
+            </span>
+          </div>
+          <p class="text-gray-600">Survey description will appear here when available.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-200">
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Status</p>
+          <p class="text-lg font-semibold text-gray-900">Draft</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Responses</p>
+          <p class="text-lg font-semibold text-gray-900">0</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Created</p>
+          <p class="text-lg font-semibold text-gray-900">-</p>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-6 border-t border-gray-200">
+        <p class="text-sm text-gray-500 mb-2">Survey URL</p>
+        <div class="flex items-center gap-2">
+          <code class="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm text-gray-800">
+            <%= request.base_url %>/surveys/slug-here
+          </code>
+          <button class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium transition-colors">
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Questions Section -->
+    <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-semibold text-gray-900">Questions</h3>
+        <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors text-sm">
+          Add Question
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Placeholder for questions -->
+        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <p class="text-gray-500 text-center">No questions yet. Add your first question to get started.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analytics Section -->
+    <div class="bg-white border border-gray-200 rounded-lg p-6">
+      <h3 class="text-xl font-semibold text-gray-900 mb-4">Analytics</h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="p-4 bg-blue-50 rounded-lg">
+          <p class="text-sm text-blue-600 font-medium mb-1">Total Responses</p>
+          <p class="text-2xl font-bold text-blue-900">0</p>
+        </div>
+        <div class="p-4 bg-green-50 rounded-lg">
+          <p class="text-sm text-green-600 font-medium mb-1">Completion Rate</p>
+          <p class="text-2xl font-bold text-green-900">-</p>
+        </div>
+        <div class="p-4 bg-yellow-50 rounded-lg">
+          <p class="text-sm text-yellow-600 font-medium mb-1">Average Time</p>
+          <p class="text-2xl font-bold text-yellow-900">-</p>
+        </div>
+        <div class="p-4 bg-purple-50 rounded-lg">
+          <p class="text-sm text-purple-600 font-medium mb-1">Views</p>
+          <p class="text-2xl font-bold text-purple-900">0</p>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-6 border-t border-gray-200">
+        <p class="text-gray-500 text-center">Analytics data will appear here once you start receiving responses.</p>
+      </div>
+    </div>
+  </div>
+</div>
+

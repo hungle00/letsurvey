@@ -1,0 +1,98 @@
+<div class="flex w-full min-h-screen">
+  <%= render "shared/sidebar" %>
+
+  <div class="flex-1 p-8">
+    <div class="mb-6 flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">My Surveys</h1>
+        <p class="text-gray-600 mt-1">Manage and track your survey forms</p>
+      </div>
+      <%= link_to new_survey_path, 
+          class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        New Survey
+      <% end %>
+    </div>
+
+    <% if flash[:notice] %>
+      <div class="mb-4 p-4 bg-green-50 text-green-700 rounded-lg">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <div class="mb-4 p-4 bg-red-50 text-red-700 rounded-lg">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
+    <!-- Surveys Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Survey Card - Placeholder (sẽ được thay thế khi có data) -->
+      <% if false # Khi có @surveys, sẽ loop qua đây %>
+        <% @surveys.each do |survey| %>
+          <div class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onclick="window.location='<%= survey_path(survey) %>'">
+            <div class="flex items-start justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900 line-clamp-2"><%= survey.title %></h3>
+              <span class="px-2 py-1 text-xs font-medium rounded-full <%= status_badge_class(survey.status) %>">
+                <%= survey.status.humanize %>
+              </span>
+            </div>
+            
+            <% if survey.description.present? %>
+              <p class="text-sm text-gray-600 mb-4 line-clamp-2"><%= survey.description %></p>
+            <% end %>
+
+            <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+              <div class="flex items-center">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <%= pluralize(survey.responses_count || 0, 'response') %>
+              </div>
+              <div class="flex items-center">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <%= survey.created_at.strftime("%b %d, %Y") %>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-gray-100">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-gray-500">Slug: <%= survey.slug %></span>
+                <%= link_to survey_path(survey), 
+                    class: "text-blue-600 hover:text-blue-700 text-sm font-medium" do %>
+                  View details →
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+
+      <!-- Empty State -->
+      <div class="col-span-full">
+        <div class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">No surveys yet</h3>
+          <p class="mt-1 text-sm text-gray-500">Get started by creating a new survey form.</p>
+          <div class="mt-6">
+            <%= link_to new_survey_path, 
+                class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700" do %>
+              <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              New Survey
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

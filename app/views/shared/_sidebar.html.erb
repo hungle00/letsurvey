@@ -1,0 +1,42 @@
+<aside class="w-64 bg-white border-r border-gray-200 min-h-screen p-6">
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold text-gray-900">LetSurvey</h2>
+  </div>
+
+  <nav class="space-y-2">
+    <%= link_to surveys_path, 
+        class: "flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors #{'bg-blue-50 text-blue-700 font-medium' if current_page?(surveys_path)}" do %>
+      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+      </svg>
+      Surveys
+    <% end %>
+
+    <%= link_to subscription_path, 
+        class: "flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors #{'bg-blue-50 text-blue-700 font-medium' if current_page?(subscription_path)}" do %>
+      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+      </svg>
+      Subscriptions
+    <% end %>
+
+    <%= link_to profile_path, 
+        class: "flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors #{'bg-blue-50 text-blue-700 font-medium' if current_page?(profile_path)}" do %>
+      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+      </svg>
+      Profile
+    <% end %>
+  </nav>
+
+  <div class="mt-8 pt-8 border-t border-gray-200">
+    <%= button_to session_path, method: :delete,
+        class: "flex items-center w-full px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors" do %>
+      <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+      </svg>
+      Sign out
+    <% end %>
+  </div>
+</aside>
+
