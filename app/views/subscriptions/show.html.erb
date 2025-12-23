@@ -1,0 +1,226 @@
+<div class="flex w-full min-h-screen">
+  <%= render "shared/sidebar" %>
+
+  <div class="flex-1 p-8">
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold text-gray-900">Subscription</h1>
+      <p class="text-gray-600 mt-1">Manage your subscription plan</p>
+    </div>
+
+    <% if flash[:notice] %>
+      <div class="mb-4 p-4 bg-green-50 text-green-700 rounded-lg">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <div class="mb-4 p-4 bg-red-50 text-red-700 rounded-lg">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
+    <% if @subscription.present? %>
+      <!-- Current Subscription Card -->
+      <div class="bg-white border border-gray-200 rounded-lg p-8 mb-6">
+        <div class="flex items-start justify-between mb-6">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Current Subscription</h2>
+            <p class="text-gray-600">Your active subscription details</p>
+          </div>
+          <span class="px-4 py-2 text-sm font-semibold rounded-full <%= subscription_status_badge_class(@subscription.status) %>">
+            <%= @subscription.status.humanize %>
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          <div>
+            <p class="text-sm text-gray-500 mb-1">Plan Type</p>
+            <p class="text-lg font-semibold text-gray-900 capitalize"><%= @subscription.account_type %></p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-500 mb-1">Max Widgets</p>
+            <p class="text-lg font-semibold text-gray-900">
+              <%= @subscription.max_widgets ? @subscription.max_widgets : "Unlimited" %>
+            </p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-500 mb-1">Start Date</p>
+            <p class="text-lg font-semibold text-gray-900">
+              <%= @subscription.subscription_start_date&.strftime("%b %d, %Y") || "N/A" %>
+            </p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-500 mb-1">End Date</p>
+            <p class="text-lg font-semibold text-gray-900">
+              <%= @subscription.subscription_end_date&.strftime("%b %d, %Y") || "Never" %>
+            </p>
+          </div>
+        </div>
+
+        <% if @subscription.brand.present? %>
+          <div class="pt-6 border-t border-gray-200">
+            <p class="text-sm text-gray-500 mb-1">Brand/Company</p>
+            <p class="text-lg font-semibold text-gray-900"><%= @subscription.brand %></p>
+          </div>
+        <% end %>
+
+        <% if @subscription.trial_end_date.present? && @subscription.trial_end_date > Date.current %>
+          <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p class="text-sm text-blue-700">
+              <strong>Trial Period:</strong> Your trial ends on <%= @subscription.trial_end_date.strftime("%B %d, %Y") %>
+            </p>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <!-- Subscription Plans Selection -->
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Choose Your Plan</h2>
+        <p class="text-gray-600">Select a subscription plan that fits your needs</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Free Plan -->
+        <div class="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-500 transition-colors">
+          <div class="text-center mb-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Free</h3>
+            <div class="mb-4">
+              <span class="text-4xl font-bold text-gray-900">$0</span>
+              <span class="text-gray-600">/month</span>
+            </div>
+            <p class="text-sm text-gray-600">Perfect for getting started</p>
+          </div>
+
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-sm text-gray-700">Up to 3 widgets</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-sm text-gray-700">Basic analytics</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-sm text-gray-700">Email support</span>
+            </li>
+          </ul>
+
+          <%= form_with url: subscription_path, method: :post, local: true, class: "mt-6" do |form| %>
+            <%= form.hidden_field "subscription[account_type]", value: "free" %>
+            <%= form.hidden_field "subscription[brand]", value: "" %>
+            <%= form.submit "Select Free Plan", 
+                class: "w-full px-4 py-2 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 cursor-pointer transition-colors" %>
+          <% end %>
+        </div>
+
+        <!-- Regular Plan -->
+        <div class="bg-white border-2 border-blue-500 rounded-lg p-6 shadow-lg relative">
+          <div class="absolute top-0 right-0 bg-blue-500 text-white px-3 py-1 rounded-bl-lg text-xs font-semibold">
+            POPULAR
+          </div>
+          <div class="text-center mb-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Regular</h3>
+            <div class="mb-4">
+              <span class="text-4xl font-bold text-gray-900">$9</span>
+              <span class="text-gray-600">/month</span>
+            </div>
+            <p class="text-sm text-gray-600">For growing businesses</p>
+          </div>
+
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-sm text-gray-700">Up to 10 widgets</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-sm text-gray-700">Advanced analytics</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-sm text-gray-700">Priority support</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-sm text-gray-700">Custom branding</span>
+            </li>
+          </ul>
+
+          <%= form_with url: subscription_path, method: :post, local: true, class: "mt-6" do |form| %>
+            <%= form.hidden_field "subscription[account_type]", value: "regular" %>
+            <%= form.hidden_field "subscription[brand]", value: "" %>
+            <%= form.submit "Select Regular Plan", 
+                class: "w-full px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 cursor-pointer transition-colors" %>
+          <% end %>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-purple-500 transition-colors">
+          <div class="text-center mb-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Premium</h3>
+            <div class="mb-4">
+              <span class="text-4xl font-bold text-gray-900">$29</span>
+              <span class="text-gray-600">/month</span>
+            </div>
+            <p class="text-sm text-gray-600">For enterprises</p>
+          </div>
+
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-sm text-gray-700">Unlimited widgets</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-sm text-gray-700">Full analytics suite</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-sm text-gray-700">24/7 priority support</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-sm text-gray-700">Advanced customization</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-sm text-gray-700">API access</span>
+            </li>
+          </ul>
+
+          <%= form_with url: subscription_path, method: :post, local: true, class: "mt-6" do |form| %>
+            <%= form.hidden_field "subscription[account_type]", value: "premium" %>
+            <%= form.hidden_field "subscription[brand]", value: "" %>
+            <%= form.submit "Select Premium Plan", 
+                class: "w-full px-4 py-2 border-2 border-purple-500 text-purple-700 font-medium rounded-lg hover:bg-purple-50 cursor-pointer transition-colors" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

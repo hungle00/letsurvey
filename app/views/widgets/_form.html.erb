@@ -1,0 +1,85 @@
+<%= form_with model: @widget, local: true, class: "space-y-6" do |form| %>
+  <% if @widget.errors.any? %>
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+      <h3 class="text-red-800 font-medium mb-2">
+        <%= pluralize(@widget.errors.count, "error") %> prohibited this widget from being saved:
+      </h3>
+      <ul class="list-disc list-inside text-sm text-red-700">
+        <% @widget.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, "Title", class: "block text-sm font-medium text-gray-700 mb-2" %>
+    <%= form.text_field :title, 
+        required: true,
+        class: "block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm",
+        placeholder: "Enter widget title" %>
+  </div>
+
+  <div>
+    <%= form.label :description, "Description", class: "block text-sm font-medium text-gray-700 mb-2" %>
+    <%= form.text_area :description, 
+        rows: 4,
+        class: "block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm",
+        placeholder: "Enter widget description (optional)" %>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <%= form.label :status, "Status", class: "block text-sm font-medium text-gray-700 mb-2" %>
+      <%= form.select :status, 
+          options_for_select([
+            ["Draft", "draft"],
+            ["Published", "published"],
+            ["Closed", "closed"],
+            ["Archived", "archived"]
+          ], @widget.status || "draft"),
+          {},
+          { class: "block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm" } %>
+    </div>
+
+    <div>
+      <%= form.label :require_email, class: "flex items-center" do %>
+        <%= form.check_box :require_email, class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <span class="ml-2 text-sm text-gray-700">Require email from respondents</span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <%= form.label :start_date, "Start Date", class: "block text-sm font-medium text-gray-700 mb-2" %>
+      <%= form.datetime_local_field :start_date, 
+          class: "block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm" %>
+      <p class="mt-1 text-xs text-gray-500">Leave empty to start immediately</p>
+    </div>
+
+    <div>
+      <%= form.label :end_date, "End Date", class: "block text-sm font-medium text-gray-700 mb-2" %>
+      <%= form.datetime_local_field :end_date, 
+          class: "block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm" %>
+      <p class="mt-1 text-xs text-gray-500">Leave empty for no end date</p>
+    </div>
+  </div>
+
+  <div>
+    <%= form.label :max_responses, "Max Responses", class: "block text-sm font-medium text-gray-700 mb-2" %>
+    <%= form.number_field :max_responses, 
+        min: 1,
+        class: "block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm",
+        placeholder: "Leave empty for unlimited" %>
+    <p class="mt-1 text-xs text-gray-500">Maximum number of responses allowed (leave empty for unlimited)</p>
+  </div>
+
+  <div class="flex items-center justify-end gap-4 pt-4 border-t border-gray-200">
+    <%= link_to "Cancel", @widget.persisted? ? widget_path(@widget) : widgets_path, 
+        class: "px-4 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors" %>
+    <%= form.submit @widget.persisted? ? "Update Widget" : "Create Widget", 
+        class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors" %>
+  </div>
+<% end %>
+

@@ -3,10 +3,12 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
 
   # Dashboard routes
-  resources :surveys
-  resource :subscription, only: [ :show ]  # subscriptions management
-  resource :profile, only: [ :show, :edit, :update ]  # user profile
-  # get "page/welcome"
+  resources :widgets
+  resource :subscription, only: [ :show, :create ]  # subscriptions management (singular resource)
+
+  get "/profile", to: "profile#show", as: :profile
+  get "/profile/edit", to: "profile#edit", as: :edit_profile
+  patch "/profile", to: "profile#update", as: :update_profile
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

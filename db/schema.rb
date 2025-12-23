@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_22_020734) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_23_015431) do
+  create_table "questions", force: :cascade do |t|
+    t.integer "widget_id", null: false
+    t.string "question_type", null: false
+    t.text "question_text", null: false
+    t.boolean "required", default: false
+    t.integer "position", null: false
+    t.boolean "allow_other", default: false
+    t.integer "min_value"
+    t.integer "max_value"
+    t.string "placeholder"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["widget_id"], name: "index_questions_on_widget_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "ip_address"
@@ -18,6 +33,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_22_020734) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "brand"
+    t.string "account_type", null: false
+    t.string "status", default: "active"
+    t.date "subscription_start_date"
+    t.date "subscription_end_date"
+    t.date "trial_end_date"
+    t.integer "max_widgets"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -30,5 +59,25 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_22_020734) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  create_table "widgets", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.string "slug", null: false
+    t.string "status", default: "draft"
+    t.boolean "require_email", default: false
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.integer "max_responses"
+    t.integer "responses_count", default: 0
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_widgets_on_slug", unique: true
+    t.index ["user_id"], name: "index_widgets_on_user_id"
+  end
+
+  add_foreign_key "questions", "widgets"
   add_foreign_key "sessions", "users"
+  add_foreign_key "subscriptions", "users"
+  add_foreign_key "widgets", "users"
 end
