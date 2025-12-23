@@ -73,12 +73,16 @@
       </div>
 
       <div class="mt-6 pt-6 border-t border-gray-200">
-        <p class="text-sm text-gray-500 mb-2">Widget URL</p>
-        <div class="flex items-center gap-2">
+        <p class="text-sm text-gray-500 mb-2">Form URL</p>
+        <% form_url = "#{request.base_url}/forms/#{@widget.slug}" %>
+        <div class="flex items-center gap-2" 
+          data-controller="clipboard"
+          data-clipboard-link-url-value="<%= form_url %>">
           <code class="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm text-gray-800">
-            <%= request.base_url %>/widgets/<%= @widget.slug %>
+            <%= form_url %>
           </code>
-          <button class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium transition-colors" onclick="navigator.clipboard.writeText('<%= request.base_url %>/widgets/<%= @widget.slug %>')">
+          <button class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium transition-colors" 
+            data-action="click->clipboard#copyLink">
             Copy
           </button>
         </div>
@@ -89,9 +93,13 @@
     <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-xl font-semibold text-gray-900">Questions</h3>
-        <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors text-sm">
+        <%= link_to widget_questions_path(@widget), 
+            class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors text-sm flex items-center" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
           Add Question
-        </button>
+        <% end %>
       </div>
 
       <div class="space-y-4">
@@ -125,8 +133,14 @@
         </div>
       </div>
 
-      <div class="mt-6 pt-6 border-t border-gray-200">
-        <p class="text-gray-500 text-center">Analytics data will appear here once you start receiving responses.</p>
+      <div class="mt-6 pt-6 border-t border-gray-200 flex justify-end">
+        <%= link_to widget_analytics_path(@widget), 
+            class: "text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors flex items-center" do %>
+          View Full Analytics
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        <% end %>
       </div>
     </div>
   </div>

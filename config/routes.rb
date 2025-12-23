@@ -3,7 +3,15 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
 
   # Dashboard routes
-  resources :widgets
+  resources :widgets do
+    resources :questions, only: [ :index, :new, :create ], module: :widgets
+    resource :analytics, only: [ :show ], module: :widgets
+  end
+
+  get "/analytics", to: "analytics#index", as: :analytics
+
+  # Public survey form (using slug instead of ID)
+  get "/forms/:slug", to: "widgets/forms#show", as: :widget_form
   resource :subscription, only: [ :show, :create ]  # subscriptions management (singular resource)
 
   get "/profile", to: "profile#show", as: :profile

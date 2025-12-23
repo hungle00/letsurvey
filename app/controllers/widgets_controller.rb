@@ -16,7 +16,7 @@ class WidgetsController < ApplicationController
     @widget = Current.user.widgets.build(widget_params)
 
     if @widget.save
-      redirect_to @widget, notice: "Widget was successfully created."
+      redirect_to widget_questions_path(@widget), notice: "Widget was successfully created."
     else
       render :new, status: :unprocessable_entity
     end

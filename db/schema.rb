@@ -16,7 +16,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_23_015431) do
     t.string "question_type", null: false
     t.text "question_text", null: false
     t.boolean "required", default: false
-    t.integer "position", null: false
+    t.integer "position", default: 0
     t.boolean "allow_other", default: false
     t.integer "min_value"
     t.integer "max_value"
