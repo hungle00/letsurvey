@@ -1,4 +1,9 @@
-<%= form_with model: [widget, question], url: widget_questions_path(widget), local: true, class: "space-y-6" do |form| %>
+<%= form_with model: [widget, question], 
+    url: question.persisted? ? widget_question_path(widget, question) : widget_questions_path(widget),
+    method: question.persisted? ? :patch : :post,
+    local: true, 
+    class: "space-y-6",
+    data: { turbo_frame: question.persisted? ? dom_id(question) : "_top" } do |form| %>
   <% if question.errors.any? %>
     <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
       <h3 class="text-sm font-medium text-red-800 mb-2">
@@ -83,8 +88,15 @@
   </div>
 
   <!-- Form Actions -->
-  <div class="pt-4 border-t border-gray-200 flex items-center justify-end">
-    <%= form.submit "Create Question", 
+  <div class="pt-4 border-t border-gray-200 flex items-center justify-end gap-3">
+    <% if question.persisted? %>
+      <%= link_to widget_questions_path(widget), 
+          class: "px-4 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors",
+          data: { turbo_frame: dom_id(question) } do %>
+        Cancel
+      <% end %>
+    <% end %>
+    <%= form.submit question.persisted? ? "Update Question" : "Create Question", 
         class: "px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors cursor-pointer" %>
   </div>
 <% end %>

@@ -1,0 +1,45 @@
+<%= turbo_frame_tag dom_id(question) do %>
+  <div class="bg-white shadow-sm border border-gray-200 rounded-lg p-6 my-4 relative">
+    <%= link_to edit_widget_question_path(widget, question), 
+        class: "absolute top-4 right-4 text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center gap-1",
+        data: { turbo_frame: dom_id(question) } do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+        </svg>
+        Edit
+    <% end %>
+    <div class="p-4 border border-gray-200 rounded-lg hover:border-blue-300 transition-colors">
+        <div class="flex items-start justify-between">
+        <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2">
+            <span class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded">
+                Position: <%= question.position %>
+            </span>
+            <span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded capitalize">
+                <%= question.question_type.humanize %>
+            </span>
+            <% if question.required? %>
+                <span class="px-2 py-1 text-xs font-medium bg-red-100 text-red-700 rounded">
+                Required
+                </span>
+            <% end %>
+            </div>
+            <p class="text-lg font-medium text-gray-900 mb-1"><%= question.question_text %></p>
+            <% if question.placeholder.present? %>
+            <p class="text-sm text-gray-500">Placeholder: <%= question.placeholder %></p>
+            <% end %>
+            <% if question.min_value.present? || question.max_value.present? %>
+            <p class="text-sm text-gray-500">
+                Range: 
+                <%= question.min_value.present? ? question.min_value : "N/A" %> - 
+                <%= question.max_value.present? ? question.max_value : "N/A" %>
+            </p>
+            <% end %>
+            <% if question.allow_other? %>
+            <p class="text-sm text-gray-500">Allows "Other" option</p>
+            <% end %>
+        </div>
+        </div>
+    </div>
+  </div>
+<% end %>

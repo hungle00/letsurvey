@@ -10,6 +10,20 @@ class Widgets::QuestionsController < ApplicationController
     @question = @widget.questions.build
   end
 
+  def edit
+    @question = @widget.questions.find(params[:id])
+  end
+
+  def update
+    @question = @widget.questions.find(params[:id])
+
+    if @question.update(question_params)
+      render partial: "question", locals: { question: @question, widget: @widget }, status: :ok
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def create
     @question = @widget.questions.build(question_params)
 
