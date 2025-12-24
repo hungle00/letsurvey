@@ -1,6 +1,8 @@
 class Question < ApplicationRecord
   belongs_to :widget, counter_cache: true
-  has_many :question_options, dependent: :destroy
+  has_many :options, class_name: "QuestionOption", dependent: :destroy
+
+  accepts_nested_attributes_for :options, allow_destroy: true, reject_if: :all_blank
 
   validates :question_type, presence: true
   validates :question_text, presence: true
@@ -12,4 +14,10 @@ class Question < ApplicationRecord
     multiple_choice: "multiple_choice",
     text: "text"
   }
+
+  private
+
+  def all_blank(attributes)
+    attributes["option_text"].blank?
+  end
 end

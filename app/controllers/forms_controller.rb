@@ -1,4 +1,4 @@
-class Widgets::FormsController < ApplicationController
+class FormsController < ApplicationController
   # Public form - no authentication required
   allow_unauthenticated_access only: :show
 
@@ -11,7 +11,7 @@ class Widgets::FormsController < ApplicationController
       return
     end
 
-    @questions = @widget.questions.order(:position)
+    @questions = @widget.questions.includes(:options).order(:position)
   end
 
   private

@@ -4,22 +4,34 @@ class Widgets::QuestionsController < ApplicationController
   def index
     @questions = @widget.questions.order(:position)
     @question = @widget.questions.build
+    # Build 4 options for new question
+    4.times { @question.options.build }
   end
 
   def new
     @question = @widget.questions.build
+    # Build 4 options for new question
+    4.times { @question.options.build }
   end
 
   def edit
-    @question = @widget.questions.find(params[:id])
+    @question = @widget.questions.includes(:options).find(params[:id])
+    # Build 4 options if less than 4 exist
+    while @question.options.length < 4
+      @question.options.build
+    end
   end
 
   def update
-    @question = @widget.questions.find(params[:id])
+    @question = @widget.questions.includes(:options).find(params[:id])
 
     if @question.update(question_params)
       render partial: "question", locals: { question: @question, widget: @widget }, status: :ok
     else
+      # Build 4 options if less than 4 exist (for form re-render)
+      while @question.options.length < 4
+        @question.options.build
+      end
       render :edit, status: :unprocessable_entity
     end
   end
@@ -28,11 +40,29 @@ class Widgets::QuestionsController < ApplicationController
     @question = @widget.questions.build(question_params)
 
     if @question.save
-      redirect_to widget_questions_path(@widget), notice: "Question was successfully created."
+      # Build new question for form reset
+      new_question = @widget.questions.build
+      4.times { new_question.options.build }
+
+      # Render the newly created question and reset form
+      render turbo_stream: [
+        turbo_stream.append("questions_list", partial: "question", locals: { question: @question, widget: @widget }),
+        turbo_stream.replace("new_question", partial: "new_question", locals: { question: new_question, widget: @widget })
+      ]
     else
-      @questions = @widget.questions.order(:position)
-      render :index, status: :unprocessable_entity
+      # Build 4 options if less than 4 exist (for form re-render)
+      while @question.options.length < 4
+        @question.options.build
+      end
+      render partial: "new_question", status: :unprocessable_entity, locals: { question: @question, widget: @widget }
     end
+  end
+
+  def destroy
+    @question = @widget.questions.find(params[:id])
+    @question.destroy
+
+    render turbo_stream: turbo_stream.remove(ActionView::RecordIdentifier.dom_id(@question))
   end
 
   private
@@ -42,6 +72,9 @@ class Widgets::QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:question_text, :question_type, :required, :position, :allow_other, :min_value, :max_value, :placeholder)
+    params.require(:question).permit(
+      :question_text, :question_type, :required, :position, :allow_other, :min_value, :max_value, :placeholder,
+      options_attributes: [ :id, :option_text, :position, :_destroy ]
+    )
   end
 end

@@ -14,6 +14,15 @@
 
         <div class="flex items-start justify-between">
           <p class="text-2xl text-gray-600 mt-1 font-bold"><%= @widget.title %></p>
+          <%= link_to preview_widget_path(@widget.id), 
+              target: "_blank",
+              class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors text-sm flex items-center gap-2" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+            </svg>
+            Preview
+          <% end %>
         </div>
       </div>
 
@@ -30,44 +39,28 @@
       <% end %>
 
       <!-- Questions List -->  
-      <% if @questions.any? %>
-        <% @questions.each do |question| %>
-          <%= render "question", question: question, widget: @widget %>
+      <div id="questions_list">
+        <% if @questions.any? %>
+          <% @questions.each do |question| %>
+            <%= render "question", question: question, widget: @widget %>
+          <% end %>
+        <% else %>
+          <div class="bg-white shadow-sm border border-gray-200 rounded-lg p-6 mb-6">
+            <div class="p-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 text-center">
+              <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <h3 class="text-sm font-medium text-gray-900 mb-1">No questions yet</h3>
+              <p class="text-sm text-gray-500">Add your first question below to get started.</p>
+            </div>
+          </div>
         <% end %>
-      <% else %>
-        <div class="bg-white shadow-sm border border-gray-200 rounded-lg p-6 mb-6">
-        <div class="p-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 text-center">
-          <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-          <h3 class="text-sm font-medium text-gray-900 mb-1">No questions yet</h3>
-          <p class="text-sm text-gray-500">Add your first question below to get started.</p>
-        </div>
       </div>
+
+      <!-- New Question Form -->
+      <%= turbo_frame_tag "new_question" do %>
+        <%= render "new_question", question: @question, widget: @widget %>
       <% end %>
-
-      <div data-controller="survey-form">
-      <div data-survey-form-target="fieldContainer">
-        <!-- New Question Forms will be added here -->
-      </div>
-
-      <button type="button" 
-        class="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors cursor-pointer"
-        data-action="click->survey-form#addQuestion">
-        Add Question +
-      </button>
-
-      <template data-survey-form-target="template">
-        <div class="question relative bg-white shadow-sm border border-gray-200 rounded-lg p-6 mb-4">
-          <a href="#" 
-            class="absolute top-4 right-4 text-red-600 hover:text-red-800 font-medium text-sm"
-            data-action="click->survey-form#removeQuestion">
-            Remove
-          </a>
-          <%= render "form", question: @question, widget: @widget %>
-        </div>
-      </template>
-      </div>
     </div>
   </div>
 </div>

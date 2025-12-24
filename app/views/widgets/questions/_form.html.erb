@@ -3,7 +3,7 @@
     method: question.persisted? ? :patch : :post,
     local: true, 
     class: "space-y-6",
-    data: { turbo_frame: question.persisted? ? dom_id(question) : "_top" } do |form| %>
+    data: { turbo_frame: question.persisted? ? dom_id(question) : "new_question" } do |form| %>
   <% if question.errors.any? %>
     <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
       <h3 class="text-sm font-medium text-red-800 mb-2">

@@ -1,23 +1,24 @@
 <div class="flex w-full min-h-screen">
   <%= render "shared/sidebar" %>
 
-  <div class="flex-1 p-8">
-    <div class="mb-6">
-      <%= link_to widget_path(@widget), 
-          class: "inline-flex items-center text-gray-600 hover:text-gray-900 mb-4" do %>
-        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-        </svg>
-        Back to Widget
-      <% end %>
+  <div class="flex-1 p-8 bg-blue-50 mx-auto">
+    <div class="max-w-4xl mx-auto">
+      <div class="mb-6">
+        <%= link_to widget_path(@widget), 
+            class: "inline-flex items-center text-gray-600 hover:text-gray-900 mb-4" do %>
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Back to Widget
+        <% end %>
 
-      <h1 class="text-3xl font-bold text-gray-900">Edit Widget</h1>
-      <p class="text-gray-600 mt-1">Update your widget details</p>
-    </div>
+        <h1 class="text-3xl font-bold text-gray-900">Edit Widget</h1>
+        <p class="text-gray-600 mt-1">Update your widget details</p>
+      </div>
 
-    <div class="bg-white border border-gray-200 rounded-lg p-8 max-w-3xl">
-      <%= render "form" %>
+      <div class="bg-white border border-gray-200 rounded-lg p-8 max-w-3xl">
+        <%= render "form" %>
+      </div>
     </div>
   </div>
 </div>
-
