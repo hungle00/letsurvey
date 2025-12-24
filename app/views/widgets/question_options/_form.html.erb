@@ -1,0 +1,21 @@
+<div class="question-options-container mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200" 
+     data-toggle-field-target="questionOptions"
+     style="display: none;">
+  <h4 class="text-sm font-semibold text-gray-700 mb-3">Question Options</h4>
+  <p class="text-xs text-gray-500 mb-4">Add up to 4 options for this question</p>
+  
+  <div class="space-y-3">
+    <% 4.times do |index| %>
+      <div class="flex items-center gap-2">
+        <%= form.label "question_options_attributes[#{index}][option_text]", 
+            "Option #{index + 1}", 
+            class: "block text-sm font-medium text-gray-700 w-20 flex-shrink-0" %>
+        <%= form.text_field "question_options_attributes[#{index}][option_text]",
+            class: "flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors",
+            placeholder: "Enter option text..." %>
+        <%= form.hidden_field "question_options_attributes[#{index}][position]", value: index + 1 %>
+      </div>
+    <% end %>
+  </div>
+</div>
+

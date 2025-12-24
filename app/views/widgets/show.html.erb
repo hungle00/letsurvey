@@ -13,7 +13,6 @@
 
       <div class="flex items-start justify-between">
         <div>
-          <h1 class="text-3xl font-bold text-gray-900">Widget Details</h1>
           <p class="text-gray-600 mt-1">View and manage your feedback widget</p>
         </div>
         <div class="flex gap-2">
@@ -98,15 +97,22 @@
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
           </svg>
-          Add Question
+          View Questions
         <% end %>
       </div>
 
       <div class="space-y-4">
-        <!-- Placeholder for questions -->
-        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-          <p class="text-gray-500 text-center">No questions yet. Add your first question to get started.</p>
-        </div>
+        <% if @widget.questions_count > 0 %>
+          <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <p class="text-blue-700 text-center font-medium">
+              This widget has <span class="font-bold"><%= @widget.questions_count %></span> <%= "question".pluralize(@widget.questions_count) %>.
+            </p>
+          </div>
+        <% else %>
+          <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="text-gray-500 text-center">No questions yet. Add your first question to get started.</p>
+          </div>
+        <% end %>
       </div>
     </div>
 

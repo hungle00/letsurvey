@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_23_015431) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_24_043746) do
+  create_table "question_options", force: :cascade do |t|
+    t.integer "question_id", null: false
+    t.string "option_text", null: false
+    t.integer "position", default: 1
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_question_options_on_question_id"
+  end
+
   create_table "questions", force: :cascade do |t|
     t.integer "widget_id", null: false
     t.string "question_type", null: false
@@ -65,17 +74,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_23_015431) do
     t.string "slug", null: false
     t.string "status", default: "draft"
     t.boolean "require_email", default: false
-    t.datetime "start_date"
-    t.datetime "end_date"
+    t.date "start_date"
+    t.date "end_date"
     t.integer "max_responses"
     t.integer "responses_count", default: 0
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "questions_count", default: 0
     t.index ["slug"], name: "index_widgets_on_slug", unique: true
     t.index ["user_id"], name: "index_widgets_on_user_id"
   end
 
+  add_foreign_key "question_options", "questions"
   add_foreign_key "questions", "widgets"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscriptions", "users"

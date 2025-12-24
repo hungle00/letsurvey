@@ -1,5 +1,6 @@
 class Question < ApplicationRecord
-  belongs_to :widget
+  belongs_to :widget, counter_cache: true
+  has_many :question_options, dependent: :destroy
 
   validates :question_type, presence: true
   validates :question_text, presence: true
