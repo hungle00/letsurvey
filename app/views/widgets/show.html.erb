@@ -23,17 +23,7 @@
       </div>
     </div>
 
-    <% if flash[:notice] %>
-      <div class="mb-4 p-4 bg-green-50 text-green-700 rounded-lg">
-        <%= flash[:notice] %>
-      </div>
-    <% end %>
-
-    <% if flash[:alert] %>
-      <div class="mb-4 p-4 bg-red-50 text-red-700 rounded-lg">
-        <%= flash[:alert] %>
-      </div>
-    <% end %>
+    <%= render "shared/flash" %>
 
     <!-- Widget Information Card -->
     <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">

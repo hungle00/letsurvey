@@ -1,0 +1,118 @@
+<div class="min-h-screen bg-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    <!-- Widget Header -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-6">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= @widget.title %></h1>
+      <% if @widget.description.present? %>
+        <p class="text-gray-600"><%= @widget.description %></p>
+      <% end %>
+    </div>
+
+    <!-- Survey Form -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+      <%= form_with url: "#", local: true, class: "space-y-6", data: { controller: "survey-form" } do |form| %>
+        <% @questions.each_with_index do |question, index| %>
+          <div class="pb-6 <%= 'border-b border-gray-200' unless index == @questions.length - 1 %>">
+            <!-- Question Text -->
+            <div class="mb-4">
+              <%= form.label "question_#{question.id}", question.question_text, 
+                  class: "block text-lg font-medium text-gray-900 mb-2" %>
+              <% if question.required? %>
+                <span class="text-red-500 text-sm">* Required</span>
+              <% end %>
+            </div>
+
+            <!-- Question Input based on type -->
+            <% case question.question_type %>
+            <% when "rating" %>
+              <div class="flex items-center gap-2">
+                <% (question.min_value || 1).upto(question.max_value || 5) do |value| %>
+                  <label class="flex items-center justify-center w-12 h-12 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                    <%= form.radio_button "question_#{question.id}", value, 
+                        required: question.required?,
+                        class: "sr-only peer" %>
+                    <span class="text-lg font-medium text-gray-700 peer-checked:text-blue-600 peer-checked:font-bold"><%= value %></span>
+                  </label>
+                <% end %>
+              </div>
+
+            <% when "single_choice" %>
+              <div class="space-y-2">
+                <% question.options.ordered.each do |option| %>
+                  <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                    <%= form.radio_button "question_#{question.id}", option.id, 
+                        required: question.required?,
+                        class: "w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500" %>
+                    <span class="ml-3 text-gray-700"><%= option.option_text %></span>
+                  </label>
+                <% end %>
+                <% if question.allow_other? %>
+                  <div class="mt-4">
+                    <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                      <%= form.radio_button "question_#{question.id}", "other", 
+                          required: question.required?,
+                          class: "w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500",
+                          data: { action: "change->survey-form#toggleOther" } %>
+                      <span class="ml-3 text-gray-700">Other</span>
+                    </label>
+                    <div class="mt-2" data-survey-form-target="otherField" style="display: none;">
+                      <%= form.text_field "question_#{question.id}_other", 
+                          placeholder: "Please specify",
+                          class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+
+            <% when "multiple_choice" %>
+              <div class="space-y-2">
+                <% question.options.ordered.each do |option| %>
+                  <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                    <%= form.check_box "question_#{question.id}[]", 
+                        { multiple: true }, 
+                        option.id, 
+                        nil,
+                        class: "w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" %>
+                    <span class="ml-3 text-gray-700"><%= option.option_text %></span>
+                  </label>
+                <% end %>
+                <% if question.allow_other? %>
+                  <div class="mt-4">
+                    <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                      <%= form.check_box "question_#{question.id}[]", 
+                          { multiple: true }, 
+                          "other", 
+                          nil,
+                          class: "w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500",
+                          data: { action: "change->survey-form#toggleOther" } %>
+                      <span class="ml-3 text-gray-700">Other</span>
+                    </label>
+                    <div class="mt-2" data-survey-form-target="otherField" style="display: none;">
+                      <%= form.text_field "question_#{question.id}_other", 
+                          placeholder: "Please specify",
+                          class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+
+            <% when "text" %>
+              <%= form.text_area "question_#{question.id}", 
+                  rows: 4,
+                  required: question.required?,
+                  placeholder: question.placeholder.presence || "Enter your answer...",
+                  class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors" %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <!-- Submit Button -->
+        <div class="pt-6 border-t border-gray-200">
+          <%= form.submit "Submit Survey", 
+              class: "w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors cursor-pointer text-lg" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
