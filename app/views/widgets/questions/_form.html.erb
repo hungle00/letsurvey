@@ -47,7 +47,20 @@
     </div>
 
     <!-- Question Options (only for single_choice and multiple_choice) -->
-    <%= render "widgets/question_options/form", form: form, question: question %>
+    <div class="question-options-container my-2 p-4 bg-gray-50 rounded-lg border border-gray-200" 
+      data-toggle-field-target="questionOptions"
+      data-controller="nested-rondo" 
+      data-nested-rondo-field-class-value="option-field">
+      <p class="text-xs text-gray-500 mb-4">Add up options for this question</p>
+      <div data-nested-rondo-target="fieldContain">
+        <%= form.fields_for :options do |option| %>
+          <%= render "option_fields", f: option %>
+        <% end %>
+      </div>
+      <div class="block text-sm font-medium text-gray-700">
+        <%= link_to_add_association "Add Option", form, :options %>
+      </div>
+    </div>
 
     <!-- Allow Other (for choice questions) -->
     <div data-toggle-field-target="allowOther" class="flex items-center" style="display: none;">

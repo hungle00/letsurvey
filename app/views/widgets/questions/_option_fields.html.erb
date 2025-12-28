@@ -1,0 +1,10 @@
+<div class="flex items-center gap-2 my-3 option-field">
+    <%= f.label :option_text,
+        class: "block text-sm font-medium text-gray-700 w-20 flex-shrink-0" %>
+    <%= f.text_field :option_text,
+        class: "flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors",
+        placeholder: "Enter option text..." %>
+    <%= f.hidden_field :id if f.object.persisted? %>
+    <%= f.hidden_field :position %>
+    <%= link_to_remove_association "Remove", f, class: "block text-sm font-medium text-gray-700" %>
+</div>
