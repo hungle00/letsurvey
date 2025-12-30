@@ -3,6 +3,7 @@ class SubscriptionsController < ApplicationController
 
   def show
     @subscription = Current.user.subscription
+    @plans = Plan.all.order(:monthly_price)
   end
 
   def create
@@ -13,7 +14,7 @@ class SubscriptionsController < ApplicationController
 
     @subscription = Current.user.build_subscription(subscription_params)
 
-    # Set default values based on account type
+    # Set default values based on plan
     set_subscription_defaults
 
     if @subscription.save
@@ -27,26 +28,24 @@ class SubscriptionsController < ApplicationController
 
   def set_subscription
     @subscription = Current.user.subscription
+    @plans = Plan.all.order(:monthly_price) if @subscription.nil?
   end
 
   def subscription_params
-    params.require(:subscription).permit(:brand, :account_type, :subscription_start_date, :subscription_end_date, :trial_end_date)
+    params.require(:subscription).permit(:brand, :plan_id, :subscription_start_date, :subscription_end_date, :trial_end_date)
   end
 
   def set_subscription_defaults
     @subscription.status = "active"
     @subscription.subscription_start_date ||= Date.current
 
-    case @subscription.account_type
-    when "free"
-      @subscription.max_widgets = 3
-      @subscription.subscription_end_date = nil # Free plan doesn't expire
-    when "regular"
-      @subscription.max_widgets = 10
-      @subscription.subscription_end_date ||= 1.year.from_now.to_date
-    when "premium"
-      @subscription.max_widgets = nil # Unlimited
-      @subscription.subscription_end_date ||= 1.year.from_now.to_date
+    if @subscription.plan.present?
+      # Free plan doesn't expire
+      if @subscription.plan.monthly_price.zero?
+        @subscription.subscription_end_date = nil
+      else
+        @subscription.subscription_end_date ||= 1.year.from_now.to_date
+      end
     end
   end
 end

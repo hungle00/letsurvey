@@ -1,13 +1,6 @@
 class Subscription < ApplicationRecord
   belongs_to :user
-
-  validates :account_type, presence: true
-
-  enum :account_type, {
-    premium: "premium",
-    regular: "regular",
-    free: "free"
-  }
+  belongs_to :plan, optional: true
 
   enum :status, {
     active: "active",

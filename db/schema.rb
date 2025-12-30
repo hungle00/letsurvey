@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_24_043746) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_30_062907) do
+  create_table "plans", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "max_widgets"
+    t.decimal "monthly_price", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "question_options", force: :cascade do |t|
     t.integer "question_id", null: false
     t.string "option_text", null: false
@@ -47,14 +55,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_24_043746) do
   create_table "subscriptions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "brand"
-    t.string "account_type", null: false
     t.string "status", default: "active"
     t.date "subscription_start_date"
     t.date "subscription_end_date"
     t.date "trial_end_date"
-    t.integer "max_widgets"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "plan_id"
+    t.index ["plan_id"], name: "index_subscriptions_on_plan_id"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
@@ -89,6 +97,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_24_043746) do
   add_foreign_key "question_options", "questions"
   add_foreign_key "questions", "widgets"
   add_foreign_key "sessions", "users"
+  add_foreign_key "subscriptions", "plans"
   add_foreign_key "subscriptions", "users"
   add_foreign_key "widgets", "users"
 end
