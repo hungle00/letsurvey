@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "questionOptions", "allowOther", "valueRange" ]
+  static targets = [ "questionOptions", "allowOther", "valueRange", "placeholder" ]
 
   connect() {
     console.log("ToggleFieldController connected");
@@ -32,5 +32,21 @@ export default class extends Controller {
     if (this.hasValueRangeTarget) {
       this.valueRangeTarget.style.display = showValueRange ? "block" : "none";
     }
+
+    // Show/hide placeholder for text/email questions
+    const showPlaceholder = questionType === "text" || questionType === "single_choice" || questionType === "multiple_choice";
+    console.log(this.placeholderTarget);
+    if (this.hasPlaceholderTarget) {
+      console.log(showPlaceholder);
+      this.placeholderTarget.style.display = showPlaceholder ? "block" : "none";
+    }
+  }
+
+  applyOption(e) {
+    const currentOption = e.target.selectedOptions[0];
+    if (!currentOption) return;
+    console.log(currentOption.label)
+    document.querySelector('#question-text-label').textContent = currentOption.label;
+    document.querySelector('#question-text-label').classList.remove('hidden');
   }
 }

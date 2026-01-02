@@ -7,4 +7,8 @@ module QuestionsHelper
       [ "Text", "text" ]
     ]
   end
+
+  def product_options
+    Product.list.map { |product| [ product.name, product.id ] }
+  end
 end

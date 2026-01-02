@@ -4,6 +4,8 @@ class Question < ApplicationRecord
 
   accepts_nested_attributes_for :options, allow_destroy: true, reject_if: :all_blank
 
+  attr_accessor :linked_product_id
+
   validates :question_type, presence: true
   validates :question_text, presence: true
   validates :position, numericality: { only_integer: true, greater_or_equal_to: 0 }, allow_blank: true

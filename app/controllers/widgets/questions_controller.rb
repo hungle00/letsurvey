@@ -4,6 +4,7 @@ class Widgets::QuestionsController < ApplicationController
   def index
     @questions = @widget.questions.order(:position)
     @question = @widget.questions.build
+    @question.options.build
   end
 
   def new
@@ -58,7 +59,8 @@ class Widgets::QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(
-      :question_text, :question_type, :required, :position, :allow_other, :min_value, :max_value, :placeholder,
+      :question_text, :question_type, :required, :position, :allow_other,
+      :min_value, :max_value, :placeholder, :linked_product_id,
       options_attributes: [ :option_text, :position, :_destroy, :id ]
     )
   end
