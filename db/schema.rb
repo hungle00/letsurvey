@@ -10,9 +10,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema[8.0].define(version: 2025_12_30_062907) do
-=======
 ActiveRecord::Schema[8.0].define(version: 2026_01_03_141552) do
   create_table "feedback_answers", force: :cascade do |t|
     t.integer "feedback_id", null: false
@@ -40,7 +37,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_03_141552) do
     t.index ["widget_id"], name: "index_feedbacks_on_widget_id"
   end
 
->>>>>>> afc623f... Add feedback for forms
   create_table "plans", force: :cascade do |t|
     t.string "name", null: false
     t.integer "max_widgets"
