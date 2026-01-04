@@ -10,7 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[8.0].define(version: 2025_12_30_062907) do
+=======
+ActiveRecord::Schema[8.0].define(version: 2026_01_03_141552) do
+  create_table "feedback_answers", force: :cascade do |t|
+    t.integer "feedback_id", null: false
+    t.integer "question_id", null: false
+    t.text "answer_text"
+    t.integer "answer_rating"
+    t.text "answer_other"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feedback_id", "question_id"], name: "index_feedback_answers_on_feedback_id_and_question_id", unique: true
+    t.index ["feedback_id"], name: "index_feedback_answers_on_feedback_id"
+    t.index ["question_id"], name: "index_feedback_answers_on_question_id"
+  end
+
+  create_table "feedbacks", force: :cascade do |t|
+    t.integer "widget_id", null: false
+    t.string "respondent_email"
+    t.boolean "is_completed", default: false
+    t.string "ip_address"
+    t.string "session_token"
+    t.datetime "submitted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["respondent_email"], name: "index_feedbacks_on_respondent_email"
+    t.index ["widget_id"], name: "index_feedbacks_on_widget_id"
+  end
+
+>>>>>>> afc623f... Add feedback for forms
   create_table "plans", force: :cascade do |t|
     t.string "name", null: false
     t.integer "max_widgets"
@@ -94,6 +124,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_062907) do
     t.index ["user_id"], name: "index_widgets_on_user_id"
   end
 
+  add_foreign_key "feedback_answers", "feedbacks"
+  add_foreign_key "feedback_answers", "questions"
+  add_foreign_key "feedbacks", "widgets"
   add_foreign_key "question_options", "questions"
   add_foreign_key "questions", "widgets"
   add_foreign_key "sessions", "users"

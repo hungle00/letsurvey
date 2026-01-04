@@ -10,7 +10,7 @@
 
     <!-- Survey Form -->
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-      <%= form_with url: submit_widget_form_path, local: true, class: "space-y-6", data: { controller: "survey-form" } do |form| %>
+      <%= form_with url: "#", local: true, class: "space-y-6", data: { controller: "survey-form" } do |form| %>
         <% @questions.each_with_index do |question, index| %>
           <div class="pb-6 <%= 'border-b border-gray-200' unless index == @questions.length - 1 %>">
             <!-- Question Text -->

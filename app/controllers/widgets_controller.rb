@@ -11,8 +11,6 @@ class WidgetsController < ApplicationController
   def preview
     @widget = Current.user.widgets.find(params[:id])
     @questions = @widget.questions.includes(:options).order(:position)
-
-    render "forms/show"
   end
 
   def new

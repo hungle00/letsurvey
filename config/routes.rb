@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
   # Public survey form (using slug instead of ID)
   get "/forms/:slug", to: "forms#show", as: :widget_form
+  post "/forms/:slug/submit", to: "forms#submit", as: :submit_widget_form
+  get "/forms/:slug/thank_you", to: "forms#thanks", as: :thank_you_widget_form
   resource :subscription, only: [ :show, :create ]  # subscriptions management (singular resource)
 
   get "/profile", to: "profile#show", as: :profile

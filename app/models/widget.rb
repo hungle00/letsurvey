@@ -5,6 +5,7 @@ class Widget < ApplicationRecord
   validates :slug, presence: true, uniqueness: true
 
   has_many :questions, dependent: :destroy
+  has_many :feedbacks, dependent: :nullify
 
   enum :status, {
     draft: "draft",

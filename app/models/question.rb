@@ -1,6 +1,7 @@
 class Question < ApplicationRecord
   belongs_to :widget, counter_cache: true
   has_many :options, class_name: "QuestionOption", dependent: :destroy
+  has_many :answers, class_name: "FeedbackAnswer", dependent: :destroy
 
   accepts_nested_attributes_for :options, allow_destroy: true, reject_if: :all_blank
 
