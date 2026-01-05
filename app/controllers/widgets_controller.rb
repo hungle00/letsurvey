@@ -1,5 +1,8 @@
 class WidgetsController < ApplicationController
+  include SubscriptionAccess
+
   before_action :set_widget, only: [ :show, :edit, :update, :destroy ]
+  before_action :check_subscription_access, only: [ :new, :create ]
 
   def index
     @widgets = Current.user.widgets.order(created_at: :desc)

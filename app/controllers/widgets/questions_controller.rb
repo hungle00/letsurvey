@@ -1,5 +1,8 @@
 class Widgets::QuestionsController < ApplicationController
+  include SubscriptionAccess
+
   before_action :set_widget
+  before_action :check_subscription_access, only: [ :new, :create ]
 
   def index
     @questions = @widget.questions.order(:position)
