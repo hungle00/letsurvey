@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   post "/forms/:slug/submit", to: "forms#submit", as: :submit_widget_form
   get "/forms/:slug/thank_you", to: "forms#thanks", as: :thank_you_widget_form
   resource :subscription, only: [ :show, :create ]  # subscriptions management (singular resource)
+  resources :products, only: [ :index ]  # products management
 
   get "/profile", to: "profile#show", as: :profile
   get "/profile/edit", to: "profile#edit", as: :edit_profile

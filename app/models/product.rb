@@ -1,39 +1,13 @@
-class Product
-  attr_accessor :id, :name, :description, :price
+class Product < ApplicationRecord
+  belongs_to :subscription
 
-  def initialize(id:, name:, description:, price:)
-    @id = id
-    @name = name
-    @description = description
-    @price = price
-  end
+  validates :name, presence: true
+  validates :price, presence: true, numericality: { greater_than: 0 }
+  validates :status, presence: true
 
-  def self.list
-    [
-      Product.new(
-        id: 1,
-        name: "Wireless Mouse",
-        description: "A smooth and responsive wireless mouse.",
-        price: 29.99
-      ),
-      Product.new(
-        id: 2,
-        name: "Mechanical Keyboard",
-        description: "A durable mechanical keyboard with customizable keys.",
-        price: 89.99
-      ),
-      Product.new(
-        id: 3,
-        name: "HD Monitor",
-        description: "A 24-inch HD monitor with vibrant colors.",
-        price: 149.99
-      ),
-      Product.new(
-        id: 4,
-        name: "USB-C Hub",
-        description: "A versatile USB-C hub with multiple ports.",
-        price: 49.99
-      )
-    ]
-  end
+  enum :status, {
+    active: "active",
+    inactive: "inactive",
+    archived: "archived"
+  }
 end

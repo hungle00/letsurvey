@@ -45,6 +45,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_03_141552) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "products", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.string "category"
+    t.decimal "price", null: false
+    t.string "status", default: "active"
+    t.integer "image_url"
+    t.integer "subscription_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subscription_id"], name: "index_products_on_subscription_id"
+  end
+
   create_table "question_options", force: :cascade do |t|
     t.integer "question_id", null: false
     t.string "option_text", null: false
@@ -123,6 +136,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_03_141552) do
   add_foreign_key "feedback_answers", "feedbacks"
   add_foreign_key "feedback_answers", "questions"
   add_foreign_key "feedbacks", "widgets"
+  add_foreign_key "products", "subscriptions"
   add_foreign_key "question_options", "questions"
   add_foreign_key "questions", "widgets"
   add_foreign_key "sessions", "users"
