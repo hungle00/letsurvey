@@ -69,6 +69,24 @@
             </div>
           </div>
         </div>
+
+        <!-- Subscription Link --> 
+        <div class="mt-8 pt-6 border-t border-gray-200">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500 mb-1">Subscription</p>
+              <p class="text-lg font-semibold text-gray-900">
+                <%= Current.user.has_active_subscription? ? "Active" : "No active subscription" %>
+              </p>
+            </div>
+            <%= link_to subscription_path, 
+                class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center" do %>
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+              </svg>
+              <%= Current.user.has_active_subscription? ? "Manage Subscription" : "Subscribe Now" %>
+            <% end %>
+          </div>
       </div>
     </div>
   </div>

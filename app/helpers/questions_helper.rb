@@ -9,6 +9,9 @@ module QuestionsHelper
   end
 
   def product_options
-    Product.list.map { |product| [ product.name, product.id ] }
+    subscription = Current.user.subscription
+    return [] unless subscription.present?
+
+    subscription.products.active.pluck(:name, :id)
   end
 end

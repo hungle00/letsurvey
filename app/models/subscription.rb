@@ -15,7 +15,14 @@ class Subscription < ApplicationRecord
   end
 
   def is_subscribed?
-    subscription_start_date.present? && subscription_end_date.present? &&
-      subscription_start_date <= Date.current
+    return false unless subscription_start_date.present?
+
+    # If subscription_end_date is nil, it's a lifetime subscription (e.g., Free plan)
+    return true if subscription_end_date.nil?
+
+    # Check if subscription is active and not expired
+    subscription_start_date <= Date.current &&
+      subscription_end_date >= Date.current &&
+      active?
   end
 end

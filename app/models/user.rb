@@ -5,4 +5,10 @@ class User < ApplicationRecord
   has_one :subscription, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+
+  def has_active_subscription?
+    return false unless subscription.present?
+
+    subscription.is_subscribed? || subscription.is_in_trial?
+  end
 end
