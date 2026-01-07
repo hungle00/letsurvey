@@ -4,26 +4,25 @@ class Widgets::AnalyticsController < ApplicationController
   def show
     @questions = @widget.questions.order(:position)
 
-    # Demo analytics data
+    # Real analytics data
     @total_responses = @widget.responses_count || 0
     @completion_rate = @total_responses > 0 ? rand(75..95) : 0
     @average_time = @total_responses > 0 ? "#{rand(2..8)} min" : "-"
     @total_views = @total_responses > 0 ? (@total_responses * rand(1.5..3.0)).to_i : 0
 
-    # Demo response trends (last 7 days)
-    @response_trends = (0..6).map do |i|
-      {
-        date: (Date.today - i.days).strftime("%b %d"),
-        count: @total_responses > 0 ? rand(0..(@total_responses / 3)) : 0
-      }
-    end.reverse
+    # Get real statistics for each question
+    answer_counts = Statistic.count_answers_by_question(@widget)
 
-    # Demo question statistics
+    # Question statistics with real data
     @question_stats = @questions.map do |question|
+      response_count = answer_counts[question.id] || 0
+
       {
         question: question,
-        response_count: @total_responses > 0 ? rand(0..@total_responses) : 0,
-        completion_rate: @total_responses > 0 ? rand(80..100) : 0
+        response_count: response_count,
+        completion_rate: @total_responses > 0 ? ((response_count.to_f / @total_responses) * 100).round : 0,
+        average_rating: question.average_rating,
+        most_chosen_option: question.most_chosen_option
       }
     end
   end

@@ -3,6 +3,7 @@ class Subscription < ApplicationRecord
   belongs_to :plan, optional: true
   has_many :products, dependent: :destroy
 
+
   enum :status, {
     active: "active",
     inactive: "inactive",
@@ -24,5 +25,13 @@ class Subscription < ApplicationRecord
     subscription_start_date <= Date.current &&
       subscription_end_date >= Date.current &&
       active?
+  end
+
+  def widgets_count
+    user.widgets.count
+  end
+
+  def can_create_widget?
+    is_subscribed? && widgets_count < plan&.widgets_limit
   end
 end

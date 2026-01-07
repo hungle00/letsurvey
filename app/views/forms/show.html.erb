@@ -10,7 +10,25 @@
 
     <!-- Survey Form -->
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-      <%= form_with url: submit_widget_form_path, local: true, class: "space-y-6", data: { controller: "survey-form" } do |form| %>
+      <%= form_with url: submit_widget_form_path(@widget.slug), local: true, class: "space-y-6", data: { controller: "survey-form" } do |form| %>
+        <% if @widget.require_email? %>
+          <div class="pb-6 border-b border-gray-200">
+            <div class="mb-4">
+              <%= form.label :respondent_email, "Email Address", 
+                  class: "block text-lg font-medium text-gray-900 mb-2" %>
+              <span class="text-red-500 text-sm">* Required</span>
+            </div>
+            <%= form.email_field :respondent_email, 
+                required: true,
+                placeholder: "Enter your email address",
+                value: params[:respondent_email],
+                class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors" %>
+            <% if @feedback&.errors&.[](:respondent_email)&.any? %>
+              <p class="mt-1 text-sm text-red-600"><%= @feedback.errors[:respondent_email].first %></p>
+            <% end %>
+          </div>
+        <% end %>
+
         <% @questions.each_with_index do |question, index| %>
           <div class="pb-6 <%= 'border-b border-gray-200' unless index == @questions.length - 1 %>">
             <!-- Question Text -->
