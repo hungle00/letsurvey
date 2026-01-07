@@ -8,3 +8,25 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInDelay {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bounceSubtle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out;
+  }
+  .animate-fade-in-delay {
+    animation: fadeInDelay 1s ease-out 0.3s both;
+  }
+  .animate-bounce-subtle {
+    animation: bounceSubtle 2s ease-in-out infinite;
+  }
+  

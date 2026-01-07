@@ -1,15 +1,17 @@
 <div class="flex w-full min-h-screen">
   <%= render "shared/sidebar" %>
 
-  <div class="flex-1 p-8">
-    <div class="mb-6 flex items-center justify-between">
+  <div class="flex-1 p-8 bg-background">
+    <div class="mb-8 flex items-center justify-between">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900">My Widgets</h1>
-        <p class="text-gray-600 mt-1">Manage and track your feedback widgets</p>
+        <h1 class="text-4xl font-bold mb-2 text-gray-900">My Widgets</h1>
+        <p class="text-gray-600 mt-1">
+          Manage and track your <span class="font-semibold text-blue-600">feedback widgets</span>
+        </p>
       </div>
       <%= link_to new_widget_path, 
-          class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center" do %>
-        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          class: "px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center gap-2" do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
         </svg>
         New Widget
@@ -22,10 +24,10 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <% if @widgets.any? %>
         <% @widgets.each do |widget| %>
-          <div class="bg-white shadow-sm border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onclick="window.location='<%= widget_path(widget) %>'">
+          <div class="bg-white shadow-md border border-gray-200 rounded-2xl p-6 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group" onclick="window.location='<%= widget_path(widget) %>'">
             <div class="flex items-start justify-between mb-4">
-              <h3 class="text-lg font-semibold text-gray-900 line-clamp-2"><%= widget.title %></h3>
-              <span class="px-2 py-1 text-xs font-medium rounded-full <%= status_badge_class(widget.status) %>">
+              <h3 class="text-lg font-bold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors"><%= widget.title %></h3>
+              <span class="px-3 py-1.5 text-xs font-semibold rounded-full shadow-sm <%= status_badge_class(widget.status) %>">
                 <%= widget.status.humanize %>
               </span>
             </div>
@@ -34,14 +36,14 @@
               <p class="text-sm text-gray-600 mb-4 line-clamp-2"><%= widget.description %></p>
             <% end %>
 
-            <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
-              <div class="flex items-center">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex items-center justify-between text-sm mb-4">
+              <div class="flex items-center px-3 py-1.5 bg-blue-50 rounded-lg">
+                <svg class="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
-                <%= pluralize(widget.responses_count || 0, 'response') %>
+                <span class="font-semibold text-blue-700"><%= pluralize(widget.responses_count || 0, 'response') %></span>
               </div>
-              <div class="flex items-center">
+              <div class="flex items-center text-gray-500">
                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
@@ -51,10 +53,13 @@
 
             <div class="pt-4 border-t border-gray-100">
               <div class="flex items-center justify-between">
-                <span class="text-xs text-gray-500">Slug: <%= widget.slug %></span>
+                <span class="text-xs text-gray-500 font-mono"><%= widget.slug %></span>
                 <%= link_to widget_path(widget), 
-                    class: "text-blue-600 hover:text-blue-700 text-sm font-medium" do %>
-                  View details →
+                    class: "text-blue-600 hover:text-blue-700 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all" do %>
+                  View details
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
                 <% end %>
               </div>
             </div>
@@ -71,7 +76,7 @@
             <p class="mt-1 text-sm text-gray-500">Get started by creating a new feedback widget.</p>
             <div class="mt-6">
               <%= link_to new_widget_path, 
-                  class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700" do %>
+                  class: "inline-flex items-center px-6 py-3 border border-transparent shadow-lg text-sm font-semibold rounded-xl text-white bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-300" do %>
                 <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>

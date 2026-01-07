@@ -1,74 +1,108 @@
-<!-- Hero Section -->
-<section class="flex items-center justify-center px-4 pt-20 pb-16 bg-linear-to-br from-blue-100 to-blue-200">
-  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+
+<!-- Sticky Header -->
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm">
+  <nav class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+      </svg>
+      <span class="text-xl font-bold text-gray-900">LetSurvey</span>
+    </div>
+    <div class="hidden md:flex items-center gap-6">
+      <a href="#features" class="text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium hover:scale-105">Features</a>
+      <a href="#how-it-works" class="text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium hover:scale-105">How It Works</a>
+      <a href="#pricing" class="text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium hover:scale-105">Pricing</a>
+    </div>
     <div>
+      <%= link_to "Get Started", widgets_path, 
+          class: "px-6 py-2 btn-primary hover:shadow-lg" %>
+    </div>
+  </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="flex items-center justify-center px-4 pt-20 pb-16 bg-gradient-to-br from-blue-50 via-teal-50 to-emerald-50">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+    <div class="animate-fade-in">
+      <div class="flex items-center justify-center gap-2 mb-4 animate-bounce-subtle">
+        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span class="text-sm font-semibold text-blue-600 bg-blue-100 px-3 py-1 rounded-full shadow-sm">Free Forever</span>
+      </div>
       <h1 class="text-5xl text-center font-extrabold leading-tight mb-6">
-        Collect Feedback That Matters
+        Collect <span class="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">Feedback</span> That Matters
       </h1>
-      <p class="text-xl text-center opacity-90 mb-8">
-        Create beautiful surveys, gather insights, and make data-driven decisions with LetSurvey
+      <p class="text-xl text-center text-gray-700 mb-8">
+        Create <span class="font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">beautiful surveys</span>, gather insights, and make <span class="font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">data-driven decisions</span> with LetSurvey
       </p>
       <div class="flex flex-wrap gap-4 justify-center">
         <%= link_to "Get Started Free", widgets_path,
-            class: "px-8 py-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-colors" %>
+            class: "px-8 py-4 btn-primary" %>
         <%= link_to "Pricing", "#pricing",
-            class: "px-8 py-4 bg-white text-blue-600 font-semibold rounded-md hover:bg-blue-50 transition-colors shadow-md" %> 
+            class: "px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-all duration-300 hover:scale-105 hover:shadow-lg border-2 border-blue-200 transform" %> 
       </div>
     </div>
 
-    <div>
-      <%= image_tag "dashboard_preview.svg", alt: "Dashboard Preview", class: "rounded-xl shadow-xl w-full" %>
+    <div class="animate-fade-in-delay">
+      <%= image_tag "dashboard_preview.svg", alt: "Dashboard Preview", class: "rounded-xl shadow-2xl w-full hover:shadow-3xl transition-shadow duration-300 transform hover:scale-105" %>
     </div>
   </div>
 </section>
 
 <!-- Features Section -->
-<section class="py-20 bg-white">
+<section class="py-20 bg-white" id="features">
   <div class="container mx-auto px-4">
     <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold text-gray-900 mb-4">Everything you need to collect feedback</h2>
+      <div class="flex items-center justify-center gap-2 mb-4">
+        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+        </svg>
+        <span class="text-sm font-semibold text-blue-600 uppercase tracking-wide">Features</span>
+      </div>
+      <h2 class="text-4xl font-bold text-gray-900 mb-4">Everything you need to <span class="text-blue-600">collect feedback</span></h2>
       <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-        Powerful features to help you create, distribute, and analyze surveys
+        <span class="font-semibold">Powerful features</span> to help you create, distribute, and analyze surveys
       </p>
     </div>
 
     <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
       <!-- Feature 1 -->
-      <div class="text-center p-6">
-        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+      <div class="text-center p-6 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 bg-white">
+        <div class="bg-gradient-to-br from-blue-100 to-blue-200 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg hover:shadow-xl transition-shadow duration-300">
           <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
           </svg>
         </div>
-        <h3 class="text-xl font-semibold text-gray-900 mb-2">Easy Survey Creation</h3>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">Easy Survey <span class="text-blue-600">Creation</span></h3>
         <p class="text-gray-600">
-          Create professional surveys in minutes with our intuitive drag-and-drop interface
+          Create professional surveys in minutes with our <span class="font-medium text-gray-800">intuitive drag-and-drop</span> interface
         </p>
       </div>
 
       <!-- Feature 2 -->
-      <div class="text-center p-6">
-        <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+      <div class="text-center p-6 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 bg-white">
+        <div class="bg-gradient-to-br from-green-100 to-green-200 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg hover:shadow-xl transition-shadow duration-300">
           <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
           </svg>
         </div>
-        <h3 class="text-xl font-semibold text-gray-900 mb-2">Real-time Analytics</h3>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">Real-time <span class="text-green-600">Analytics</span></h3>
         <p class="text-gray-600">
-          Get instant insights with beautiful charts and detailed response analytics
+          Get <span class="font-medium text-gray-800">instant insights</span> with beautiful charts and detailed response analytics
         </p>
       </div>
 
       <!-- Feature 3 -->
-      <div class="text-center p-6">
-        <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="text-center p-6 rounded-xl border border-gray-200 hover:border-teal-300 hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 bg-white">
+        <div class="bg-gradient-to-br from-teal-100 to-teal-200 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
           </svg>
         </div>
-        <h3 class="text-xl font-semibold text-gray-900 mb-2">Secure & Private</h3>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2"><span class="text-teal-600">Secure</span> & Private</h3>
         <p class="text-gray-600">
-          Your data is protected with enterprise-grade security and privacy controls
+          Your data is protected with <span class="font-medium text-gray-800">enterprise-grade security</span> and privacy controls
         </p>
       </div>
     </div>
@@ -76,47 +110,59 @@
 </section>
 
 <!-- How It Works Section -->
-<section class="py-20 bg-blue-50">
+<section class="py-20 bg-gradient-to-b from-blue-50 to-teal-50" id="how-it-works">
   <div class="container mx-auto px-4">
     <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
+      <div class="flex items-center justify-center gap-2 mb-4">
+        <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+        <span class="text-sm font-semibold text-teal-600 uppercase tracking-wide">Simple Process</span>
+      </div>
+      <h2 class="text-4xl font-bold text-gray-900 mb-4">How It <span class="text-teal-600">Works</span></h2>
       <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-        Get started in three simple steps
+        Get started in <span class="font-semibold text-teal-600 bg-teal-50 px-2 py-0.5 rounded">three simple steps</span>
       </p>
     </div>
 
     <div class="max-w-4xl mx-auto">
       <div class="grid md:grid-cols-3 gap-8">
         <!-- Step 1 -->
-        <div class="text-center">
-          <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
-            1
+        <div class="text-center group">
+          <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-3">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Create Your Survey</h3>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">Create Your <span class="text-blue-600">Survey</span></h3>
           <p class="text-gray-600">
-            Choose from multiple question types and customize your survey to match your brand
+            Choose from <span class="font-medium text-gray-800">multiple question types</span> and customize your survey to match your brand
           </p>
         </div>
 
         <!-- Step 2 -->
-        <div class="text-center">
-          <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
-            2
+        <div class="text-center group">
+          <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-3">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+            </svg>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Share & Collect</h3>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-teal-600 transition-colors"><span class="text-teal-600">Share</span> & Collect</h3>
           <p class="text-gray-600">
-            Share your survey link via email, social media, or embed it on your website
+            Share your survey link via <span class="font-medium text-gray-800">email, social media</span>, or embed it on your website
           </p>
         </div>
 
         <!-- Step 3 -->
-        <div class="text-center">
-          <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
-            3
+        <div class="text-center group">
+          <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-3">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Analyze Results</h3>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors">Analyze <span class="text-emerald-600">Results</span></h3>
           <p class="text-gray-600">
-            View real-time responses, export data, and make informed decisions
+            View <span class="font-medium text-gray-800">real-time responses</span>, export data, and make informed decisions
           </p>
         </div>
       </div>
@@ -127,15 +173,21 @@
 <section class="py-20 bg-white" id="pricing">
   <div class="max-w-4xl mx-auto px-4">
     <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold text-gray-900 mb-4">Choose Your Plan</h2>
+      <div class="flex items-center justify-center gap-2 mb-4">
+        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span class="text-sm font-semibold text-blue-600 uppercase tracking-wide">Pricing</span>
+      </div>
+      <h2 class="text-4xl font-bold text-gray-900 mb-4">Choose Your <span class="text-blue-600">Plan</span></h2>
       <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-        Flexible pricing options to suit your needs
+        <span class="font-semibold">Flexible pricing</span> options to suit your needs
       </p>
     </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <% @plans.each_with_index do |plan, index| %>
-          <div class="bg-white border-2 <%= index == 1 ? 'border-blue-500 shadow-lg' : 'border-gray-200' %> rounded-lg p-6 <%= index == 1 ? '' : 'hover:border-blue-500' %> transition-colors relative">
+          <div class="bg-white border-2 <%= index == 1 ? 'border-blue-500 shadow-xl' : 'border-gray-200' %> rounded-xl p-6 <%= index == 1 ? '' : 'hover:border-blue-400' %> transition-all duration-300 relative transform hover:scale-105 hover:-translate-y-2 hover:shadow-xl">
             <% if index == 1 %>
               <div class="absolute top-0 right-0 bg-blue-500 text-white px-3 py-1 rounded-bl-lg text-xs font-semibold">
                 POPULAR
@@ -198,7 +250,7 @@
             </ul>
 
             <%= link_to subscription_path, 
-                class: "block w-full px-4 py-2 text-center #{index == 1 ? 'bg-blue-600 text-white hover:bg-blue-700' : index == 2 ? 'border-2 border-purple-500 text-purple-700 hover:bg-purple-50' : 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50'} font-medium rounded-lg cursor-pointer transition-colors" do %>
+                class: "block w-full px-4 py-2 text-center #{index == 1 ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg' : index == 2 ? 'border-2 border-teal-500 text-teal-700 hover:bg-teal-50 hover:border-teal-600' : 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-blue-300'} font-medium rounded-lg cursor-pointer transition-all duration-300 transform hover:scale-105" do %>
               Select <%= plan.name %> Plan
             <% end %>
           </div>
@@ -208,14 +260,20 @@
 </section>
 
 <!-- CTA Section -->
-<section class="lg:mx-12 py-20 bg-blue-500 text-white">
+<section class="lg:mx-12 py-16 bg-gradient-to-r from-blue-50 via-teal-50 to-emerald-50 border-2 border-blue-200 rounded-2xl shadow-lg">
   <div class="container mx-auto px-4 text-center">
-    <h2 class="text-4xl font-bold mb-4">Ready to get started?</h2>
-    <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-      Join thousands of businesses collecting valuable feedback with LetSurvey
+    <div class="flex items-center justify-center gap-2 mb-4">
+      <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+      </svg>
+      <span class="text-sm font-medium text-blue-600 uppercase tracking-wide">Get Started</span>
+    </div>
+    <h2 class="text-3xl font-bold text-gray-900 mb-4">Ready to <span class="text-blue-600">get started</span>?</h2>
+    <p class="text-lg text-gray-700 mb-8 max-w-2xl mx-auto">
+      Join <span class="font-semibold text-gray-900">thousands of businesses</span> collecting valuable feedback with LetSurvey
     </p>
     <%= link_to "Create Your First Widget", widgets_path, 
-        class: "inline-block px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors shadow-lg" %>
+        class: "inline-block btn-primary px-8 py-3 shadow-md hover:shadow-lg" %>
   </div>
 </section>
 

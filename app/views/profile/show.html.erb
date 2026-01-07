@@ -1,15 +1,18 @@
 <div class="flex w-full min-h-screen">
   <%= render "shared/sidebar" %>
 
-  <div class="flex-1 p-8 bg-blue-50 mx-auto">
+  <div class="flex-1 p-8 bg-background mx-auto">
     <div class="max-w-4xl mx-auto">
-      <div class="mb-6 flex items-center justify-between">
+      <div class="mb-8 flex items-center justify-between">
         <div>
-          <p class="text-gray-600 font-bold mt-1">Manage your account information</p>
+          <h1 class="text-4xl font-bold mb-2 text-gray-900">Profile</h1>
+          <p class="text-gray-600 mt-1">
+            Manage your <span class="font-semibold text-blue-600">account information</span>
+          </p>
         </div>
         <%= link_to edit_profile_path, 
-            class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center" do %>
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            class: "px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center gap-2" do %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
           </svg>
           Edit Profile
@@ -19,10 +22,10 @@
       <%= render "shared/flash" %>
 
       <!-- Profile Information Card -->
-      <div class="bg-white shadow-sm border border-gray-200 rounded-lg p-8">
+      <div class="bg-white shadow-lg border border-gray-200 rounded-2xl p-8">
         <div class="mb-6">
           <h2 class="text-2xl font-bold text-gray-900 mb-2">Account Information</h2>
-          <p class="text-gray-600">Your personal profile details</p>
+          <p class="text-gray-600">Your personal <span class="font-semibold text-blue-600">profile details</span></p>
         </div>
 
         <div class="space-y-6">
@@ -55,15 +58,15 @@
         <!-- Account Metadata -->
         <div class="mt-8 pt-6 border-t border-gray-200">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <p class="text-sm text-gray-500 mb-1">Member Since</p>
-              <p class="text-lg font-semibold text-gray-900">
+            <div class="p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl">
+              <p class="text-sm text-blue-600 font-medium mb-1">Member Since</p>
+              <p class="text-xl font-bold text-blue-900">
                 <%= @user.created_at.strftime("%B %d, %Y") %>
               </p>
             </div>
-            <div>
-              <p class="text-sm text-gray-500 mb-1">Last Updated</p>
-              <p class="text-lg font-semibold text-gray-900">
+            <div class="p-4 bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl">
+              <p class="text-sm text-teal-600 font-medium mb-1">Last Updated</p>
+              <p class="text-xl font-bold text-teal-900">
                 <%= @user.updated_at.strftime("%B %d, %Y") %>
               </p>
             </div>
@@ -80,8 +83,8 @@
               </p>
             </div>
             <%= link_to subscription_path, 
-                class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center" do %>
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                class: "px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center gap-2" do %>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
               </svg>
               <%= Current.user.has_active_subscription? ? "Manage Subscription" : "Subscribe Now" %>
