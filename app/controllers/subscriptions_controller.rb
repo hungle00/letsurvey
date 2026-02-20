@@ -48,4 +48,18 @@ class SubscriptionsController < ApplicationController
       end
     end
   end
+
+  def create_payment
+    @subscription = Current.user.subscription
+
+    if @subscription.nil?
+      redirect_to subscription_path, alert: "You need to create a subscription first."
+      return
+    end
+
+    vnpay_service = VnpayService.new(@subscription)
+    payment_url = vnpay_service.create_payment_url
+
+    redirect_to payment_url, alert: "Redirecting to payment gateway..."
+  end
 end
