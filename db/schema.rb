@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_03_141552) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_20_051619) do
   create_table "feedback_answers", force: :cascade do |t|
     t.integer "feedback_id", null: false
     t.integer "question_id", null: false
@@ -35,6 +35,25 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_03_141552) do
     t.datetime "updated_at", null: false
     t.index ["respondent_email"], name: "index_feedbacks_on_respondent_email"
     t.index ["widget_id"], name: "index_feedbacks_on_widget_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "subscription_id"
+    t.string "app_trans_id", limit: 100, null: false
+    t.string "zp_trans_id", limit: 50
+    t.integer "amount", null: false
+    t.integer "status", default: 0, null: false
+    t.string "return_code", limit: 20
+    t.string "bank_code", limit: 50
+    t.text "callback_data"
+    t.text "return_data"
+    t.datetime "paid_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["app_trans_id"], name: "index_payments_on_app_trans_id", unique: true
+    t.index ["subscription_id"], name: "index_payments_on_subscription_id"
+    t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
   create_table "plans", force: :cascade do |t|
@@ -136,6 +155,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_03_141552) do
   add_foreign_key "feedback_answers", "feedbacks"
   add_foreign_key "feedback_answers", "questions"
   add_foreign_key "feedbacks", "widgets"
+  add_foreign_key "payments", "subscriptions"
+  add_foreign_key "payments", "users"
   add_foreign_key "products", "subscriptions"
   add_foreign_key "question_options", "questions"
   add_foreign_key "questions", "widgets"

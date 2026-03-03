@@ -142,11 +142,11 @@
                 <% end %>
               </ul>
 
-              <%= form_with url: subscription_path, method: :post, local: true, class: "mt-6" do |form| %>
-                <%= form.hidden_field "subscription[plan_id]", value: plan.id %>
-                <%= form.hidden_field "subscription[brand]", value: "" %>
+              <%= form_with url: payments_create_path, method: :post, local: false, class: "mt-6 payment-form", data: { turbo: false } do |form| %>
+                <%= form.hidden_field :plan_id, value: plan.id %>
                 <%= form.submit "Select #{plan.name} Plan", 
-                    class: "w-full px-4 py-2 #{index == 1 ? 'bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white shadow-lg hover:shadow-xl' : index == 2 ? 'border-2 border-purple-500 text-purple-700 hover:bg-purple-50' : 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50'} font-semibold rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105" %>
+                    class: "w-full px-4 py-2 payment-submit #{index == 1 ? 'bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white shadow-lg hover:shadow-xl' : index == 2 ? 'border-2 border-purple-500 text-purple-700 hover:bg-purple-50' : 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50'} font-semibold rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105",
+                    data: { disable_with: "Redirecting...", original_value: "Select #{plan.name} Plan" } %>
               <% end %>
             </div>
           <% end %>
@@ -155,3 +155,38 @@
     </div>
   </div>
 </div>
+
+<script>
+(function() {
+  document.querySelectorAll(".payment-form").forEach(function(form) {
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      var submitBtn = form.querySelector(".payment-submit");
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.value = submitBtn.dataset.disableWith || "Redirecting...";
+      }
+      var body = new FormData(form);
+      fetch(form.action, {
+        method: "POST",
+        body: body,
+        headers: { "Accept": "application/json" },
+        credentials: "same-origin"
+      })
+        .then(function(res) { return res.json().then(function(data) { return { ok: res.ok, status: res.status, data: data }; }); })
+        .then(function(result) {
+          if (result.data.payment_url) {
+            window.location.href = result.data.payment_url;
+          } else {
+            alert(result.data.error || "Something went wrong.");
+            if (submitBtn) { submitBtn.disabled = false; submitBtn.value = submitBtn.dataset.originalValue || submitBtn.value; }
+          }
+        })
+        .catch(function() {
+          alert("Request failed.");
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.value = submitBtn.dataset.originalValue || submitBtn.value; }
+        });
+    });
+  });
+})();
+</script>
