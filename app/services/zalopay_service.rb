@@ -9,14 +9,16 @@ require "json"
 
 class ZalopayService
   VIETNAM_TZ = ActiveSupport::TimeZone["Asia/Ho_Chi_Minh"]
+  USD_TO_VND_RATE = 26200 # just hardcode for now
 
   class << self
     def compute_hmac_sha256(key, data)
       OpenSSL::HMAC.hexdigest("SHA256", key.to_s, data.to_s)
     end
 
+    # app_trans_id must start with the format yymmdd (timezone VN); add HHMMSS to reduce duplication.
     def app_trans_id_prefix
-      Time.current.in_time_zone(VIETNAM_TZ).strftime("%y%m%d")
+      Time.current.in_time_zone(VIETNAM_TZ).strftime("%y%m%d_%H%M%S")
     end
 
     def generate_app_trans_id(uid = nil)
@@ -43,7 +45,7 @@ class ZalopayService
       embed_str = embed_data.is_a?(String) ? embed_data : embed_data.to_json
       item_str = item.is_a?(String) ? item : item.to_json
 
-      hmac_data = "#{app_id}|#{app_trans_id}|#{app_user}|#{amount}|#{app_time}|#{embed_str}|#{item_str}"
+      hmac_data = "#{app_id}|#{app_trans_id}|#{app_user}|#{(amount * USD_TO_VND_RATE).to_i}|#{app_time}|#{embed_str}|#{item_str}"
       mac = compute_hmac_sha256(key1, hmac_data)
 
       form = {
@@ -51,7 +53,7 @@ class ZalopayService
         "app_user" => app_user,
         "app_trans_id" => app_trans_id,
         "app_time" => app_time,
-        "amount" => amount,
+        "amount" => (amount * USD_TO_VND_RATE).to_i,
         "description" => description,
         "embed_data" => embed_str,
         "item" => item_str,
@@ -106,7 +108,7 @@ class ZalopayService
         res = Net::HTTP.post_form(url, form)
         JSON.parse(res.body)
       rescue StandardError => e
-        { "return_code" => 2, "return_message" => e.message, "zp_trans_id" => nil, "amount" => nil }
+        { "return_code" => 2, "return_message" => e.message, "zp_trans_id" => nil, "amount" => (amount / USD_TO_VND_RATE).to_i }
       end
     end
   end

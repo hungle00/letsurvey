@@ -14,4 +14,3 @@ module SubscriptionsHelper
     end
   end
 end
-

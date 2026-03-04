@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-# ZaloPay payment API – create order, callback (IPN), return URL, status
+# ZaloPay payment API – create order, callback, return URL, status
 # Docs: https://developers.zalopay.vn/v2/general/overview.html#tao-don-hang
 
 class PaymentsController < ApplicationController
-  allow_unauthenticated_access only: [ :ipn, :return ]
-  skip_before_action :verify_authenticity_token, only: [ :ipn, :return ]
+  allow_unauthenticated_access only: [ :callback, :return ]
+  skip_before_action :verify_authenticity_token, only: [ :callback, :return ]
 
   def create
     user = Current.user
@@ -15,28 +15,23 @@ class PaymentsController < ApplicationController
     end
 
     plan_id = params[:plan_id].presence
-    if plan_id.present?
-      plan = Plan.find_by(id: plan_id)
-      return respond_create_error("Plan not found") unless plan
-      amount = plan.monthly_price.to_i
-      duration_days = 30
-      if amount <= 0
-        create_free_subscription(user, plan)
-        return redirect_to subscription_path, notice: "Subscription activated successfully!"
-      end
-    else
-      duration_days = (params[:duration_days] || 30).to_i
-      amount = (params[:amount] || 0).to_i
-      if amount <= 0
-        return respond_create_error("amount must be greater than 0")
-      end
+    return respond_create_error("Plan not found") if plan_id.blank?
+
+    plan = Plan.find_by(id: plan_id)
+    return respond_create_error("Plan not found") unless plan
+
+    amount = plan.monthly_price.to_i
+    duration_days = 30
+    if amount <= 0
+      create_free_subscription(user, plan)
+      return redirect_to subscription_path, notice: "Subscription activated successfully!"
     end
 
     bank_code = params[:bank_code].presence || ZaloPayConfig::DEFAULT_BANK_CODE
     app_trans_id = ZalopayService.generate_app_trans_id("#{user.id}_#{plan_id || 'api'}")
     description = "Subscription payment - #{duration_days} days"
     base_url = request.base_url
-    callback_url = "#{base_url}/payments/ipn"
+    callback_url = "#{base_url}/payments/callback"
     redirect_url = "#{base_url}/payments/return?app_trans_id=#{app_trans_id}"
 
     metadata = { service: "subscription", duration_days: duration_days, plan_id: plan_id }
@@ -70,14 +65,13 @@ class PaymentsController < ApplicationController
     render json: {
       message: "Payment order created successfully",
       payment_url: result[:order_url],
-      txn_ref: app_trans_id,
       app_trans_id: app_trans_id,
       amount: amount,
       duration_days: duration_days
     }, status: :created
   end
 
-  def ipn
+  def callback
     body = request.raw_post
     payload = begin
       JSON.parse(body)
@@ -125,7 +119,7 @@ class PaymentsController < ApplicationController
 
     render json: { return_code: 1, return_message: "success" }, status: :ok
   rescue StandardError => e
-    Rails.logger.error "PaymentsController#ipn: #{e.message}"
+    Rails.logger.error "PaymentsController#callback: #{e.message}"
     render json: { return_code: 0, return_message: "Error: #{e.message}" }, status: :internal_server_error
   end
 
@@ -160,7 +154,6 @@ class PaymentsController < ApplicationController
         redirect_to subscription_path, notice: "Payment successful. Subscription has been activated."
       else
         render_success_return(
-          txn_ref: app_trans_id,
           transaction_no: payment.zp_trans_id.to_s,
           amount: payment.amount.to_s,
           response_code: "1"
@@ -168,7 +161,6 @@ class PaymentsController < ApplicationController
       end
     else
       render_failed_return(
-        txn_ref: app_trans_id,
         response_code: payment.return_code.to_s,
         amount: payment.amount.to_s,
         transaction_no: payment.zp_trans_id.to_s,
@@ -181,14 +173,13 @@ class PaymentsController < ApplicationController
   end
 
   def status
-    app_trans_id = params[:txn_ref] || params[:app_trans_id]
+    app_trans_id = params[:app_trans_id]
     payment = Current.user.payments.find_by(app_trans_id: app_trans_id)
     unless payment
       return render json: { error: "Payment not found" }, status: :not_found
     end
 
     data = {
-      txn_ref: payment.app_trans_id,
       app_trans_id: payment.app_trans_id,
       status: payment.status,
       amount: payment.amount,
@@ -275,13 +266,12 @@ class PaymentsController < ApplicationController
     end
   end
 
-  def render_success_return(txn_ref:, transaction_no:, amount:, response_code:)
+  def render_success_return(app_trans_id:, transaction_no:, amount:, response_code:)
     amt = amount.present? ? amount.to_i : 0
     data = {
       success: true,
       message: "Payment successful",
-      txn_ref: txn_ref,
-      app_trans_id: txn_ref,
+      app_trans_id: app_trans_id,
       transaction_no: transaction_no,
       amount: amt,
       response_code: response_code
@@ -292,7 +282,7 @@ class PaymentsController < ApplicationController
       render json: {
         title: "Payment result",
         result: "Success",
-        order_id: txn_ref,
+        order_id: app_trans_id,
         amount: amt,
         transaction_no: transaction_no,
         response_code: response_code
@@ -300,12 +290,12 @@ class PaymentsController < ApplicationController
     end
   end
 
-  def render_failed_return(txn_ref:, response_code:, amount:, transaction_no:, message:)
+  def render_failed_return(app_trans_id:, response_code:, amount:, transaction_no:, message:)
     amt = amount.present? ? amount.to_i : 0
     data = {
       success: false,
       message: "Payment failed",
-      txn_ref: txn_ref,
+      app_trans_id: app_trans_id,
       response_code: response_code,
       error_message: message
     }
@@ -315,7 +305,7 @@ class PaymentsController < ApplicationController
       render json: {
         title: "Payment result",
         result: "Error",
-        order_id: txn_ref,
+        order_id: app_trans_id,
         amount: amt,
         transaction_no: transaction_no,
         response_code: response_code,

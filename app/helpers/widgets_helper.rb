@@ -14,4 +14,3 @@ module WidgetsHelper
     end
   end
 end
-

@@ -20,9 +20,9 @@ Rails.application.routes.draw do
 
   # ZaloPay payments (create order, callback IPN, return URL, status)
   post "payments/create", to: "payments#create", as: :payments_create
-  post "payments/ipn", to: "payments#ipn"
+  post "payments/callback", to: "payments#callback"
   get "payments/return", to: "payments#return"
-  get "payments/status/:txn_ref", to: "payments#status", as: :payment_status
+  get "payments/status/:app_trans_id", to: "payments#status", as: :payment_status
 
   get "/profile", to: "profile#show", as: :profile
   get "/profile/edit", to: "profile#edit", as: :edit_profile

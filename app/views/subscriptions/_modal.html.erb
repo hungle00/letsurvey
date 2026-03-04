@@ -1,0 +1,49 @@
+<div data-modal-target="modal" data-action="click->modal#closeOutside"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 hidden">
+  <div class="max-h-screen w-full max-w-2xl relative">
+    <%= form_with url: payments_create_path, method: :post, local: false, class: "mt-6 payment-form", data: { turbo: false } do |form| %>
+        <div class="m-1 bg-white rounded shadow">
+        <div class="p-8">
+            <h2 class="text-xl mb-4">Subscription confirmation</h2>
+            <p class="mb-4">
+              Please select a plan and payment method to confirm your subscription.
+            </p>
+
+            <div class="space-y-4 mb-6">
+              <div>
+                <label for="plan_id" class="block text-sm font-medium text-gray-700 mb-1">Chọn gói</label>
+                <%= form.select :plan_id,
+                  options_from_collection_for_select(@plans || [], :id, :name),
+                  { include_blank: "— Chọn gói —" },
+                  class: "w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500",
+                  data: { modal_target: "planSelect" } %>
+              </div>
+              <div>
+                <label for="bank_code" class="block text-sm font-medium text-gray-700 mb-1">Hình thức thanh toán</label>
+                <%= form.select :bank_code,
+                  [
+                    ["Mặc định (ZaloPay App / Cổng ZaloPay)", ""],
+                    ["Thẻ ATM nội địa", "ATM"],
+                    ["Thẻ quốc tế (Visa, MasterCard, JCB)", "CC"],
+                    ["Ví ZaloPay", "zalopayapp"]
+                  ],
+                  {},
+                  class: "w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+              </div>
+            </div>
+
+            <div class="flex justify-end items-center flex-wrap gap-2 mt-6">
+            <button
+                type="button"
+                class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded"
+                data-action="click->modal#close"
+            >
+                Close
+            </button>
+            <%= form.submit "Xác nhận thanh toán", class: "payment-submit bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white font-semibold py-2 px-4 rounded cursor-pointer", data: { disable_with: "Đang chuyển..." } %>
+            </div>
+        </div>
+        </div>
+    <% end %>
+  </div>
+</div>
