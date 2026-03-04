@@ -18,6 +18,12 @@ Rails.application.routes.draw do
   resource :subscription, only: [ :show, :create ]  # subscriptions management (singular resource)
   resources :products, only: [ :index ]  # products management
 
+  # ZaloPay payments (create order, callback IPN, return URL, status)
+  post "payments/create", to: "payments#create", as: :payments_create
+  post "payments/callback", to: "payments#callback"
+  get "payments/return", to: "payments#return"
+  get "payments/status/:app_trans_id", to: "payments#status", as: :payment_status
+
   get "/profile", to: "profile#show", as: :profile
   get "/profile/edit", to: "profile#edit", as: :edit_profile
   patch "/profile", to: "profile#update", as: :update_profile
